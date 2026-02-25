@@ -58,3 +58,29 @@ def cmd_incomplete(args):
 task = tasks[args.index - 1]
     incomplete_task(task.id)
     print(f"[TODO] Marked incomplete: {task.title}")
+
+def main():
+    """Main CLI entry point"""
+    parser = argparse.ArgumentParser(
+        description="Simple To-Do List CLI",
+        prog="todo"
+    )
+    subparsers = parser.add_subparsers(dest="command", help="Available commands")
+
+ # Add command
+    add_parser = subparsers.add_parser("add", help="Add a new task")
+    add_parser.add_argument("title", help="Task title")
+    add_parser.add_argument("-d", "--description", help="Task description")
+    add_parser.set_defaults(func=cmd_add)
+  )
+    subparsers = parser.add_subparsers(dest="command", help="Available commands")
+
+# Add command
+    add_parser = subparsers.add_parser("add", help="Add a new task")
+    add_parser.add_argument("title", help="Task title")
+    add_parser.add_argument("-d", "--description", help="Task description")
+    add_parser.set_defaults(func=cmd_add)
+
+ # List command
+    list_parser = subparsers.add_parser("list", help="List all tasks")
+    list_parser.set_defaults(func=cmd_list)
