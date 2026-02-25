@@ -84,3 +84,29 @@ def main():
  # List command
     list_parser = subparsers.add_parser("list", help="List all tasks")
     list_parser.set_defaults(func=cmd_list)
+
+ # Delete command
+    delete_parser = subparsers.add_parser("delete", help="Delete a task")
+    delete_parser.add_argument("index", type=int, help="Task number")
+    delete_parser.set_defaults(func=cmd_delete)
+    
+    # Complete command
+    complete_parser = subparsers.add_parser("done", help="Mark task as complete")
+    complete_parser.add_argument("index", type=int, help="Task number")
+    complete_parser.set_defaults(func=cmd_complete)
+    
+    # Incomplete command
+    incomplete_parser = subparsers.add_parser("todo", help="Mark task as incomplete")
+    incomplete_parser.add_argument("index", type=int, help="Task number")
+    incomplete_parser.set_defaults(func=cmd_incomplete)
+
+args = parser.parse_args()
+    
+    if args.command is None:
+        parser.print_help()
+        return
+    
+    args.func(args)
+
+if __name__ == "__main__":
+    main()
