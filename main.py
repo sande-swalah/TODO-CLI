@@ -34,3 +34,27 @@ def cmd_delete(args):
     if args.index < 1 or args.index > len(tasks):
         print("[ERROR] Invalid task number")
         return
+task = tasks[args.index - 1]
+    delete_task(task.id)
+    print(f"[DELETED] {task.title}")
+def cmd_complete(args):
+    """Mark a task as complete"""
+    tasks = get_all_tasks()
+    if args.index < 1 or args.index > len(tasks):
+        print("[ERROR] Invalid task number")
+        return
+
+task = tasks[args.index - 1]
+    complete_task(task.id)
+    print(f"[COMPLETED] {task.title}")
+
+def cmd_incomplete(args):
+    """Mark a task as incomplete"""
+    tasks = get_all_tasks()
+    if args.index < 1 or args.index > len(tasks):
+        print("[ERROR] Invalid task number")
+        return
+
+task = tasks[args.index - 1]
+    incomplete_task(task.id)
+    print(f"[TODO] Marked incomplete: {task.title}")
