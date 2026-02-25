@@ -1,0 +1,6 @@
+# TODO CLI - Simple Task App
+# Uses only Python standard library
+# Python 3.10+ required
+
+# No external dependencies needed!
+
