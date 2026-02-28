@@ -1,7 +1,5 @@
 import json
 import os
-import uuid
-from datetime import datetime
 from functools import wraps
 
 
@@ -35,7 +33,7 @@ def validate_task_data(func):
     def wrapper(*args, **kwargs):
         result = func(*args, **kwargs)
         if isinstance(result, dict) and result is not None:
-            required_fields = ['id', 'title', 'completed', 'created_at']
+            required_fields = ['id', 'title', 'completed']
             if all(field in result for field in required_fields):
                 return result
         return result
@@ -47,20 +45,28 @@ def validate_task_data(func):
 class Task:
     """Represents a single task in the to-do list"""
     
-    def __init__(self, title, description="", task_id=None, completed=False, 
-                 created_at=None, user_id=None):
+    def __init__(self, title, description="", task_id=None, completed=False, user_id=None):
         """Initialize a Task instance"""
         self.id = task_id or self._generate_id()
         self.title = title
         self.description = description
         self.completed = completed
-        self.created_at = created_at or datetime.now().isoformat()
         self.user_id = user_id
 
     @staticmethod
     def _generate_id():
-        """Generate a short ID (8 characters)"""
-        return str(uuid.uuid4())[:8]
+        """Generate a simple unique ID by counting existing tasks in the data file"""
+        path = TaskStorage.DATA_FILE
+        if os.path.exists(path):
+            try:
+                with open(path, 'r') as f:
+                    data = json.load(f)
+                if isinstance(data, list):
+                    return str(len(data) + 1)
+            except Exception:
+                pass
+        # fallback when file missing or unreadable
+        return "1"
 
     def to_dict(self):
         """Convert task to dictionary for JSON storage"""
@@ -70,8 +76,7 @@ class Task:
             "title": self.title,
             "description": self.description,
             "user_id": self.user_id,
-            "completed": self.completed,
-            "created_at": self.created_at
+            "completed": self.completed
         }
 
     @classmethod
@@ -82,7 +87,6 @@ class Task:
             description=data.get("description", ""),
             task_id=data.get("task_id") or data.get("id"),
             completed=data.get("completed", False),
-            created_at=data.get("created_at"),
             user_id=data.get("user_id")
         )
 
@@ -101,7 +105,6 @@ class TaskStorage:
     @classmethod
     @ensure_data_dir
     @handle_file_errors
-    @validate_task_data
     def load_all_tasks(cls):
         """Load all tasks from the file"""
         if not os.path.exists(cls.DATA_FILE):
