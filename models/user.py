@@ -2,10 +2,10 @@ import hashlib
 
 class User:
     def __init__(self, name, email, password, role="user"):
-        # assign via property setters so validation is centralized
+
         self.name = name
         self.email = email
-        self.password = password      # setter will hash and validate
+        self.password = password      
         self.role = role
     
     @property
@@ -14,7 +14,7 @@ class User:
 
     @name.setter
     def name(self, value):
-        # ensure we have a non-empty string
+    
         if not value or not isinstance(value, str):
             raise ValueError("Name must be a non-empty string")
         self._name = value
