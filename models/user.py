@@ -6,7 +6,7 @@ class User:
         self.email = email
         self.password = hashlib.md5(password.encode()).hexdigest()
         self.role = role
-        
+
     def check_password(self, password):
         return self.password == hashlib.md5(password.encode()).hexdigest()
 
