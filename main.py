@@ -17,7 +17,7 @@ def register():
         print("Email already exists!")
         return
 
-    # first user is admin
+   
     role = "admin" if len(users) == 0 else "user"
 
     new_user = User(name, email, password, role)
